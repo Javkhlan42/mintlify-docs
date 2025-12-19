@@ -16,12 +16,12 @@
           {
             "group": "Getting started",
             "pages": [
-                "index",
-              "Procedure",
-              
+              "index",
+              "Procedure"
             ]
-          },
-          
+          }
+        ]
+      },
       {
         "tab": "API reference",
         "groups": [
