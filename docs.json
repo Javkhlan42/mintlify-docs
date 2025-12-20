@@ -34,11 +34,11 @@
           {
             "group": "Endpoint examples",
             "pages": [
-              "api-reference/endpoint/admin-email",
-              "api-reference/endpoint/assistant",
-              "api-reference/endpoint/directory",
               "api-reference/endpoint/home",
-              "api-reference/endpoint/organization"
+              "api-reference/endpoint/organization",
+              "api-reference/endpoint/directory",
+              "api-reference/endpoint/admin-email",
+              "api-reference/endpoint/assistant"
             ]
           }
         ]
