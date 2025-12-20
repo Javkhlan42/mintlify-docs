@@ -1,33 +1,52 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Yellow Book API Documentation"
+description: "Yellow Book системийн API танилцуулга болон баталгаажуулалтын заавар"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Танилцуулга
 
-## Welcome
+Yellow Book API нь байгууллага, хэрэглэгч болон гуравдагч системүүдийн хооронд
+өгөгдөл солилцох зориулалттай RESTful API юм.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+Энэхүү API нь байгууллагын лавлах мэдээлэл, хайлт, AI Assistant-д суурилсан
+асуулт-хариултын үйлчилгээг системүүдэд интеграци хийх боломж олгоно.
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+---
 
-## Authentication
+## Ерөнхий мэдээлэл
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Yellow Book API нь дараах зорилготой:
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+- Байгууллагын мэдээллийг төвлөрсөн хэлбэрээр дамжуулах  
+- Directory болон ангилалд суурилсан хайлт хийх  
+- AI Assistant ашиглан асуултад суурилсан лавлагаа авах  
+- Веб, mobile болон backend системүүдтэй холбогдох  
+
+API нь **JSON форматтай** өгөгдөл солилцоно.
+
+---
+
+## Үндсэн боломжууд
+
+<CardGrid columns={2}>
+  <Card title="Байгууллагын удирдлага" icon="building">
+    - Байгууллагын жагсаалт авах  
+    - Байгууллагын дэлгэрэнгүй мэдээлэл авах  
+    - Ангилал, байршлаар шүүх  
+  </Card>
+
+  <Card title="Directory хайлт" icon="search">
+    - Түлхүүр үгээр байгууллага хайх  
+    - Ангилал, үйлчилгээний төрлөөр хайх  
+  </Card>
+
+  <Card title="AI Assistant" icon="robot">
+    - Байгууллагын мэдээллийг асуултаар хайх  
+    - Байршил, үйлчилгээ, чиглэлд суурилсан ухаалаг хайлт  
+  </Card>
+
+  <Card title="Admin үйлчилгээ" icon="settings">
+    - Системийн и-мэйл илгээх  
+    - Дотоод удирдлагын API endpoint-ууд  
+  </Card>
+</CardGrid>
