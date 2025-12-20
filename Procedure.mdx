@@ -1,94 +1,95 @@
 ---
-title: 'Development'
-description: 'Preview changes locally to update your docs'
+title: "Yellow Book системд байгууллагын мэдээлэл авах (Procedure)"
+description: "Yellow Book систем ашиглан байгууллагын мэдээллийг хурдан, алдаагүй авах процедур"
 ---
 
-<Info>
-  **Prerequisites**:
-  - Node.js version 19 or higher
-  - A docs repository with a `docs.json` file
-</Info>
+## Даалгавар
 
-Follow these steps to install and run Mintlify on your operating system.
+Yellow Book системд байгууллагын мэдээллийг хайж, дэлгэрэнгүй мэдээллийг амжилттай харах.
 
-<Steps>
-<Step title="Install the Mintlify CLI">
+---
 
-```bash
-npm i -g mint
-```
-</Step>
+## Зорилго (Purpose)
 
-<Step title="Preview locally">
+Энэхүү procedure нь Yellow Book системийг мэддэг хэрэглэгч байгууллагын мэдээллийг  
+**хурдан, алдаагүй, стандарт дарааллаар** авахад зориулагдсан.
 
-Navigate to your docs directory where your `docs.json` file is located, and run the following command:
+---
 
-```bash
-mint dev
-```
+## Урьдчилсан нөхцөл (Preconditions)
 
-A local preview of your documentation will be available at `http://localhost:3000`.
+Procedure-г эхлэхээс өмнө дараах нөхцөл хангагдсан байна:
 
-</Step>
-</Steps>
+- Интернет холболт хэвийн байх  
+- Chrome, Edge, Firefox зэрэг веб хөтөч ашиглаж байх  
+- Yellow Book сайт руу нэвтэрсэн байх  
 
-## Custom ports
+---
 
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. For example, to run Mintlify on port 3333, use this command:
+## Алхамчилсан заавар (Procedure)
 
-```bash
-mint dev --port 3333
-```
+1. Yellow Book системийн нүүр хуудас руу орно.  
+2. Хайлтын талбарт байгууллагын нэр эсвэл түлхүүр үг оруулна.  
+3. **Хайх** товчийг дарна.  
+4. Хайлтын үр дүнгийн жагсаалт гарч ирэхийг хүлээнэ.  
+5. Шаардлагатай байгууллагын нэр дээр дарна.  
+6. Байгууллагын дэлгэрэнгүй мэдээллийг шалгана:
+   - Байгууллагын нэр  
+   - Үйл ажиллагааны чиглэл  
+   - Хаяг  
+   - Холбоо барих утас, и-мэйл  
+7. Шаардлагатай тохиолдолд холбоо барих мэдээллийг ашиглана.
 
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
+---
 
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
+## 💡 Нэмэлт боломж (Optional)
 
-## Mintlify versions
+<Callout type="info">
+  Yellow Book систем нь байгууллагын мэдээллийг **AI Assistant ашиглан асуултаар хайх**
+  нэмэлт боломжтой.
+</Callout>
 
-Please note that each CLI release is associated with a specific version of Mintlify. If your local preview does not align with the production version, please update the CLI:
+Жишээ асуултууд:
+- “Сүхбаатар дүүрэгт ресторан байна уу?”
+- “Чингэлтэйд ойролцоох үйлчилгээний байгууллага”
 
-```bash
-npm mint update
-```
+---
 
-## Validating links
+## Хүлээгдэж буй үр дүн (Expected Result)
 
-The CLI can assist with validating links in your documentation. To identify any broken links, use the following command:
+- Байгууллагын мэдээлэл амжилттай харагдана  
+- Байгууллагын дэлгэрэнгүй хуудас нээгдсэн байна  
+- Холбоо барих мэдээлэл бүрэн харагдана  
 
-```bash
-mint broken-links
-```
+<Card title="Амжилттай гүйцэтгэл" icon="check-circle">
+  Байгууллагын дэлгэрэнгүй мэдээлэл алдаагүй харагдсан байна.
+</Card>
 
-## Deployment
+---
 
-If the deployment is successful, you should see the following:
+## Алдааны тохиолдол (Error Handling)
 
-<Frame>
-  <img src="/images/checks-passed.png" alt="Screenshot of a deployment confirmation message that says All checks have passed." style={{ borderRadius: '0.5rem' }} />
-</Frame>
+| Нөхцөл | Болзошгүй шалтгаан | Шийдэл |
+|------|------------------|--------|
+| Хайлтын үр дүн гарахгүй | Түлхүүр үг буруу | Өөр түлхүүр үгээр дахин хайх |
+| Байгууллага олдохгүй | Мэдээлэл бүртгэлгүй | Ангиллаар хайж үзэх |
+| Хуудас ачааллахгүй | Систем ачаалалтай | Хуудсыг дахин ачаалах |
 
-## Code formatting
+---
 
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
+## Notes
 
-## Troubleshooting
+- Түлхүүр үгийг товч, ойлгомжтой оруулах нь хайлтын үр дүнг сайжруулна  
+- Байгууллагын мэдээллийг зөвхөн хууль ёсны, ёс зүйтэй зорилгоор ашиглана  
+- AI Assistant нь **заавал биш**, нэмэлт хайлтад зориулагдсан  
 
-<AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
+---
 
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of the CLI: `npm remove -g mint`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall the CLI: `npm i -g mint`
-  </Accordion>
+## Биелэгдэх шалгуурууд (Completion Criteria)
 
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the `~/.mintlify` folder. Then run `mint dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in the latest CLI version? Check out the [CLI changelog](https://www.npmjs.com/package/mintlify?activeTab=versions).
+<Card title="Completion Criteria" icon="flag">
+  <ul>
+    <li>Байгууллагын мэдээлэл системд харагдсан</li>
+    <li>Дэлгэрэнгүй хуудас амжилттай нээгдсэн</li>
+  </ul>
+</Card>
