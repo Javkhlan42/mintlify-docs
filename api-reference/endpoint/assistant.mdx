@@ -1,158 +1,146 @@
 ---
-title: 'Админд и-мэйл илгээх'
-api: 'POST /admin/email'
-description: 'Систем админд санал, хүсэлт, асуудлын талаар и-мэйл илгээх'
+title: 'AI Assistant хайлт'
+api: 'POST /yellow-books/assistant'
+description: 'Асуултаар байгууллагын мэдээлэл хайх (AI-powered)'
 ---
 
 <Note>
-  Энэхүү endpoint нь хэрэглэгчид **Yellow Book админд и-мэйл илгээх** боломж олгоно. Байгууллагын мэдээлэл засварлах хүсэлт, санал, асуудлын талаар мэдэгдэл илгээхэд ашиглана.
+  Энэхүү endpoint нь **AI технологи ашиглан** байгууллагын мэдээллийг байгалийн хэл дээрх асуултаар хайна. Уламжлалт хайлтаас илүү уян хатан, ойлгомжтой хайлт хийх боломжтой.
 </Note>
-
-## Use Cases
-
-<CardGroup cols={2}>
-  <Card title="Мэдээлэл засварлах" icon="pen-to-square">
-    Байгууллагын мэдээлэл засварлах хүсэлт
-  </Card>
-  
-  <Card title="Байгууллага нэмүүлэх" icon="circle-plus">
-    Шинэ байгууллага нэмүүлэх санал
-  </Card>
-  
-  <Card title="Алдаа мэдэгдэх" icon="bug">
-    Системийн алдаа мэдэгдэх
-  </Card>
-  
-  <Card title="Санал өгөх" icon="lightbulb">
-    Сайжруулалтын санал өгөх
-  </Card>
-</CardGroup>
-
----
 
 ## Endpoint
 
 <CodeGroup>
 ```bash cURL
-curl -X POST "https://sharnom.systems/admin/email" \
+curl -X POST "https://sharnom.systems/yellow-books/assistant" \
   -H "Content-Type: application/json" \
-  -d '{
-    "subject": "Байгууллагын мэдээлэл засварлах хүсэлт",
-    "body": "Манай байгууллагын утасны дугаар өөрчлөгдсөн...",
-    "from": "manager@company.mn"
-  }'
+  -d '{"question": "Сүхбаатар дүүрэгт ресторан байна уу?"}'
 ```
 
 ```javascript JavaScript
-const response = await fetch('https://sharnom.systems/admin/email', {
+const response = await fetch('https://sharnom.systems/yellow-books/assistant', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    subject: 'Байгууллагын мэдээлэл засварлах хүсэлт',
-    body: 'Манай байгууллагын утасны дугаар өөрчлөгдсөн...',
-    from: 'manager@company.mn'
+  body: JSON.stringify({ 
+    question: 'Сүхбаатар дүүрэгт ресторан байна уу?' 
   })
 });
 
 const data = await response.json();
-if (data.status === 'Success') {
-  console.log('И-мэйл амжилттай илгээгдлээ');
-}
+console.log('Хариулт:', data.answer);
+console.log('Байгууллагууд:', data.organizations);
 ```
 
 ```python Python
 import requests
 
 response = requests.post(
-    "https://sharnom.systems/admin/email",
+    "https://sharnom.systems/yellow-books/assistant",
     headers={"Content-Type": "application/json"},
-    json={
-        "subject": "Байгууллагын мэдээлэл засварлах хүсэлт",
-        "body": "Манай байгууллагын утасны дугаар өөрчлөгдсөн...",
-        "from": "manager@company.mn"
-    }
+    json={"question": "Сүхбаатар дүүрэгт ресторан байна уу?"}
 )
 
 data = response.json()
-if data['status'] == 'Success':
-    print("И-мэйл амжилттай илгээгдлээ")
+print(f"Хариулт: {data['answer']}")
+print(f"Байгууллагын тоо: {len(data['organizations'])}")
 ```
 </CodeGroup>
 
 ---
 
-## Request Body
+## Request
 
-<ParamField body="subject" type="string" required>
-  И-мэйлийн сэдэв (5-200 тэмдэгт)
-</ParamField>
-
-<ParamField body="body" type="string" required>
-  И-мэйлийн агуулга (10-2000 тэмдэгт)
-</ParamField>
-
-<ParamField body="from" type="string" required>
-  Илгээгчийн и-мэйл хаяг (email формат)
+<ParamField body="question" type="string" required>
+  Байгалийн хэл дээрх асуулт (Монгол хэл дээр)
 </ParamField>
 
 ---
 
-## Example Requests
+## Example Questions
 
-<Tabs>
-  <Tab title="Мэдээлэл засварлах">
-    ```json
-    {
-      "subject": "Байгууллагын мэдээлэл засварлах хүсэлт",
-      "body": "Сайн байна уу. Манай байгууллагын утасны дугаар 7000-0001-ээс 7000-0002 болж өөрчлөгдсөн байна. Системд шинэчлүүлж өгнө үү. Байгууллагын ID: 1",
-      "from": "manager@coffeehouse.mn"
-    }
+<CardGroup cols={2}>
+  <Card title="Дүүргээр хайх" icon="location-dot">
+    ```text
+    Сүхбаатар дүүрэгт ресторан байна уу?
     ```
-  </Tab>
+  </Card>
   
-  <Tab title="Байгууллага нэмүүлэх">
-    ```json
-    {
-      "subject": "Шинэ байгууллага нэмүүлэх хүсэлт",
-      "body": "Сайн байна уу. Манай шинэ ресторан 'Монгол амт' Баянзүрх дүүрэгт нээгдсэн. Yellow Book-т нэмүүлэхийг хүсч байна. Холбоо барих утас: 7000-9999, И-мэйл: info@mongolamt.mn",
-      "from": "owner@mongolamt.mn"
-    }
+  <Card title="Ангиллаар хайх" icon="tag">
+    ```text
+    Кофе шоп хаана байна?
     ```
-  </Tab>
+  </Card>
   
-  <Tab title="Алдаа мэдэгдэх">
-    ```json
-    {
-      "subject": "Системийн алдаа - Байгууллага олдохгүй байна",
-      "body": "Сайн байна уу. ID: 123 байгууллагыг хайхад 404 алдаа гарч байна. Гэхдээ жагсаалтад харагдаж байна. Засаж өгнө үү.",
-      "from": "user@example.com"
-    }
+  <Card title="Нарийвчилсан" icon="magnifying-glass-plus">
+    ```text
+    Чингэлтэй дүүрэгт банк байна уу?
     ```
-  </Tab>
-</Tabs>
+  </Card>
+  
+  <Card title="Байршлаар" icon="map-location-dot">
+    ```text
+    Миний ойролцоо ресторан байна уу?
+    ```
+  </Card>
+</CardGroup>
+
+<Tip>
+  **Жишээ нарийвчилсан асуулт:**
+  "Өдрийн кофе, цай уудаг газар Сүхбаатарт хаана байна?"
+</Tip>
 
 ---
 
 ## Response
 
-<ResponseField name="value" type="boolean">
-  `true` - амжилттай илгээгдсэн
+<ResponseField name="answer" type="string">
+  AI-ийн бичсэн хариулт (Монгол хэл дээр)
 </ResponseField>
 
-<ResponseField name="data" type="null">
-  Нэмэлт өгөгдөл (null)
-</ResponseField>
-
-<ResponseField name="msgList" type="array">
-  Амжилтын мессеж
-</ResponseField>
-
-<ResponseField name="attrs" type="object">
-  Нэмэлт атрибутууд
-</ResponseField>
-
-<ResponseField name="status" type="string">
-  `"Success"` эсвэл `"Error"`
+<ResponseField name="organizations" type="array">
+  Хайлтад тохирсон байгууллагуудын жагсаалт
+  
+  <Expandable title="Organization объект">
+    <ResponseField name="id" type="string">
+      Байгууллагын ID
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Байгууллагын нэр
+    </ResponseField>
+    
+    <ResponseField name="category" type="string">
+      Ангилал
+    </ResponseField>
+    
+    <ResponseField name="address" type="string">
+      Хаяг
+    </ResponseField>
+    
+    <ResponseField name="district" type="string">
+      Дүүрэг
+    </ResponseField>
+    
+    <ResponseField name="phone" type="string">
+      Утасны дугаар
+    </ResponseField>
+    
+    <ResponseField name="email" type="string">
+      И-мэйл хаяг
+    </ResponseField>
+    
+    <ResponseField name="website" type="string">
+      Вебсайт
+    </ResponseField>
+    
+    <ResponseField name="latitude" type="number">
+      Өргөрөг
+    </ResponseField>
+    
+    <ResponseField name="longitude" type="number">
+      Уртраг
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 ---
@@ -163,29 +151,43 @@ if data['status'] == 'Success':
   <Tab title="Success (200)">
     ```json
     {
-      "value": true,
-      "data": null,
-      "msgList": [
-        "И-мэйл амжилттай илгээгдлээ"
-      ],
-      "attrs": {},
-      "status": "Success"
+      "answer": "Тийм, Сүхбаатар дүүрэгт олон ресторан байгаа. Эндээс хэдэн жишээг харуулж байна:",
+      "organizations": [
+        {
+          "id": "1",
+          "name": "Кофе хаус",
+          "category": "Зоогийн газар",
+          "address": "Сүхбаатар дүүрэг, 1-р хороо",
+          "district": "Сүхбаатар",
+          "phone": "7000-0001",
+          "email": "info@coffeehouse.mn",
+          "website": "https://coffeehouse.mn",
+          "latitude": 47.9186,
+          "longitude": 106.9177
+        },
+        {
+          "id": "5",
+          "name": "Монгол рестораны",
+          "category": "Зоогийн газар",
+          "address": "Сүхбаатар дүүрэг, 3-р хороо",
+          "district": "Сүхбаатар",
+          "phone": "7000-0005",
+          "email": "contact@mongolrest.mn",
+          "website": null,
+          "latitude": 47.9195,
+          "longitude": 106.9180
+        }
+      ]
     }
     ```
   </Tab>
   
-  <Tab title="Validation Error (400)">
+  <Tab title="Error (400)">
     ```json
     {
-      "value": null,
-      "data": null,
-      "msgList": [
-        "subject талбар заавал шаардлагатай",
-        "body 10-аас дээш тэмдэгт байх ёстой",
-        "from талбар буруу и-мэйл формат"
-      ],
-      "attrs": {},
-      "status": "Error"
+      "answer": null,
+      "organizations": [],
+      "error": "Асуулт оруулна уу"
     }
     ```
   </Tab>
@@ -193,15 +195,10 @@ if data['status'] == 'Success':
   <Tab title="Rate Limit (429)">
     ```json
     {
-      "value": null,
-      "data": null,
-      "msgList": [
-        "Хэт олон и-мэйл илгээж байна. 1 цагийн дараа дахин оролдоно уу."
-      ],
-      "attrs": {
-        "retryAfter": 3600
-      },
-      "status": "Error"
+      "answer": null,
+      "organizations": [],
+      "error": "Rate limit хэтэрсэн. Түр хүлээгээд дахин оролдоно уу.",
+      "retryAfter": 60
     }
     ```
   </Tab>
@@ -209,101 +206,89 @@ if data['status'] == 'Success':
 
 ---
 
-## Validation Rules
-
-| Талбар | Шалгуур |
-|--------|---------|
-| `subject` | 5-200 тэмдэгт |
-| `body` | 10-2000 тэмдэгт |
-| `from` | И-мэйл формат (example@domain.com) |
-
----
-
 ## Code Examples
 
 <CodeGroup>
 
-```javascript JavaScript - Form Handler
-async function sendAdminEmail(subject, body, from) {
-  const response = await fetch('https://sharnom.systems/admin/email', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ subject, body, from })
-  });
+```javascript JavaScript - Basic
+async function aiSearch(question) {
+  const response = await fetch(
+    'https://sharnom.systems/yellow-books/assistant',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question })
+    }
+  );
   
   const data = await response.json();
   return data;
 }
 
 // Ашиглалт
-const result = await sendAdminEmail(
-  'Байгууллагын мэдээлэл засварлах хүсэлт',
-  'Манай байгууллагын утасны дугаар өөрчлөгдсөн...',
-  'manager@company.mn'
-);
-
-if (result.status === 'Success') {
-  console.log('И-мэйл амжилттай илгээгдлээ');
-} else {
-  console.error('Алдаа:', result.msgList);
-}
+const result = await aiSearch('Сүхбаатар дүүрэгт ресторан байна уу?');
+console.log('Хариулт:', result.answer);
+console.log('Байгууллагууд:', result.organizations);
 ```
 
 ```python Python - requests
 import requests
+import json
 
-def send_admin_email(subject, body, from_email):
-    url = "https://sharnom.systems/admin/email"
+def ai_search(question):
+    url = "https://sharnom.systems/yellow-books/assistant"
     headers = {"Content-Type": "application/json"}
-    data = {
-        "subject": subject,
-        "body": body,
-        "from": from_email
-    }
+    data = {"question": question}
     
     response = requests.post(url, headers=headers, json=data)
     return response.json()
 
 # Ашиглалт
-result = send_admin_email(
-    subject="Байгууллагын мэдээлэл засварлах хүсэлт",
-    body="Манай байгууллагын утасны дугаар өөрчлөгдсөн...",
-    from_email="manager@company.mn"
-)
-
-if result['status'] == 'Success':
-    print("И-мэйл амжилттай илгээгдлээ")
+result = ai_search("Сүхбаатар дүүрэгт ресторан байна уу?")
+print(f"Хариулт: {result['answer']}")
+print(f"Байгууллагын тоо: {len(result['organizations'])}")
 ```
 
 ```typescript TypeScript
-interface AdminEmailRequest {
-  subject: string;
-  body: string;
-  from: string;
+interface AISearchRequest {
+  question: string;
 }
 
-interface AdminEmailResponse {
-  value: boolean;
-  data: null;
-  msgList: string[];
-  attrs: Record<string, any>;
-  status: 'Success' | 'Error';
+interface Organization {
+  id: string;
+  name: string;
+  category: string;
+  address: string;
+  district: string;
+  phone: string;
+  email: string | null;
+  website: string | null;
+  latitude: number;
+  longitude: number;
 }
 
-async function sendAdminEmail(
-  request: AdminEmailRequest
-): Promise<AdminEmailResponse> {
-  const response = await fetch('https://sharnom.systems/admin/email', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(request)
-  });
+interface AISearchResponse {
+  answer: string;
+  organizations: Organization[];
+}
+
+async function aiAssistantSearch(
+  question: string
+): Promise<AISearchResponse> {
+  const response = await fetch(
+    'https://sharnom.systems/yellow-books/assistant',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question } as AISearchRequest)
+    }
+  );
   
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   
-  return await response.json();
+  return await response.json() as AISearchResponse;
 }
 ```
 
@@ -314,251 +299,203 @@ async function sendAdminEmail(
 ## Usage Examples
 
 <AccordionGroup>
-  <Accordion title="React Form Component" icon="react">
+  <Accordion title="React Component" icon="react">
     ```jsx
     import React, { useState } from 'react';
 
-    function AdminEmailForm() {
-      const [formData, setFormData] = useState({
-        subject: '',
-        body: '',
-        from: ''
-      });
-      const [status, setStatus] = useState(null);
+    function AIAssistantSearch() {
+      const [question, setQuestion] = useState('');
+      const [result, setResult] = useState(null);
       const [loading, setLoading] = useState(false);
       
-      const handleSubmit = async (e) => {
+      const handleSearch = async (e) => {
         e.preventDefault();
         setLoading(true);
         
         try {
           const response = await fetch(
-            'https://sharnom.systems/admin/email',
+            'https://sharnom.systems/yellow-books/assistant',
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(formData)
+              body: JSON.stringify({ question })
             }
           );
           
           const data = await response.json();
-          
-          if (data.status === 'Success') {
-            setStatus({ 
-              type: 'success', 
-              message: 'И-мэйл амжилттай илгээгдлээ!' 
-            });
-            setFormData({ subject: '', body: '', from: '' });
-          } else {
-            setStatus({ 
-              type: 'error', 
-              message: data.msgList.join(', ') 
-            });
-          }
+          setResult(data);
         } catch (error) {
-          setStatus({ type: 'error', message: 'Алдаа гарлаа' });
+          console.error('Алдаа:', error);
         } finally {
           setLoading(false);
         }
       };
       
       return (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Таны и-мэйл:</label>
-            <input
-              type="email"
-              value={formData.from}
-              onChange={(e) => setFormData({
-                ...formData, 
-                from: e.target.value
-              })}
-              required
-            />
-          </div>
-          
-          <div>
-            <label>Сэдэв:</label>
+        <div>
+          <form onSubmit={handleSearch}>
             <input
               type="text"
-              value={formData.subject}
-              onChange={(e) => setFormData({
-                ...formData, 
-                subject: e.target.value
-              })}
-              minLength={5}
-              maxLength={200}
-              required
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Асуулт оруулна уу..."
             />
-          </div>
+            <button type="submit" disabled={loading}>
+              {loading ? 'Хайж байна...' : 'Хайх'}
+            </button>
+          </form>
           
-          <div>
-            <label>Мессеж:</label>
-            <textarea
-              value={formData.body}
-              onChange={(e) => setFormData({
-                ...formData, 
-                body: e.target.value
-              })}
-              minLength={10}
-              maxLength={2000}
-              required
-            />
-          </div>
-          
-          <button type="submit" disabled={loading}>
-            {loading ? 'Илгээж байна...' : 'Илгээх'}
-          </button>
-          
-          {status && (
-            <div className={status.type}>
-              {status.message}
+          {result && (
+            <div>
+              <p><strong>Хариулт:</strong> {result.answer}</p>
+              <h3>Байгууллагууд ({result.organizations.length})</h3>
+              <ul>
+                {result.organizations.map(org => (
+                  <li key={org.id}>
+                    <strong>{org.name}</strong> - {org.address}
+                    <br />Утас: {org.phone}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
-        </form>
+        </div>
       );
     }
     ```
   </Accordion>
   
-  <Accordion title="Validation Helper" icon="check-double">
+  <Accordion title="Error Handling" icon="shield-exclamation">
     ```javascript
-    function validateEmailForm(subject, body, from) {
-      const errors = [];
-      
-      // Subject validation
-      if (!subject || subject.trim().length < 5) {
-        errors.push('Сэдэв 5-аас дээш тэмдэгт байх ёстой');
+    async function safeAISearch(question) {
+      try {
+        const response = await fetch(
+          'https://sharnom.systems/yellow-books/assistant',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          }
+        );
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('AI хайлтын алдаа:', error);
+        return {
+          answer: 'Алдаа гарлаа. Дахин оролдоно уу.',
+          organizations: []
+        };
       }
-      if (subject && subject.length > 200) {
-        errors.push('Сэдэв 200-аас бага тэмдэгт байх ёстой');
-      }
-      
-      // Body validation
-      if (!body || body.trim().length < 10) {
-        errors.push('Мессеж 10-аас дээш тэмдэгт байх ёстой');
-      }
-      if (body && body.length > 2000) {
-        errors.push('Мессеж 2000-аас бага тэмдэгт байх ёстой');
-      }
-      
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!from || !emailRegex.test(from)) {
-        errors.push('И-мэйл хаяг буруу форматтай байна');
-      }
-      
-      return {
-        isValid: errors.length === 0,
-        errors
-      };
-    }
-
-    // Ашиглалт
-    const validation = validateEmailForm(subject, body, from);
-    if (!validation.isValid) {
-      console.error('Validation алдаа:', validation.errors);
     }
     ```
   </Accordion>
+  
+  <Accordion title="Debouncing" icon="clock">
+    ```javascript
+    import { debounce } from 'lodash';
+
+    const debouncedSearch = debounce(async (question) => {
+      const result = await aiAssistantSearch(question);
+      setResult(result);
+    }, 500);
+
+    // Ашиглалт
+    <input 
+      onChange={(e) => debouncedSearch(e.target.value)}
+      placeholder="Асуулт оруулна уу..."
+    />
+    ```
+  </Accordion>
 </AccordionGroup>
-
----
-
-## Rate Limiting
-
-<Warning>
-  **Rate limit:**
-  - 5 и-мэйл / 1 цаг (нэг и-мэйл хаягаас)
-  - 100 и-мэйл / өдөр (системд)
-</Warning>
 
 ---
 
 ## Best Practices
 
 <CardGroup cols={2}>
-  <Card title="И-мэйл баталгаажуулах" icon="envelope-circle-check">
-    Хэрэглэгчийн и-мэйл хаягийг баталгаажуулах
+  <Card title="Асуулт зөв тавих" icon="comment-dots">
+    **Зөв:** "Сүхбаатар дүүрэгт ресторан байна уу?"
+    
+    **Буруу:** "ресторан" (хэт богино)
   </Card>
   
-  <Card title="Captcha ашиглах" icon="shield-halved">
-    Спам эсэргүүцэл
+  <Card title="Error Handling" icon="shield-check">
+    Үргэлж алдааны тохиолдлыг боловсруулах
   </Card>
   
-  <Card title="Loading state" icon="spinner">
-    Илгээж байх үед харуулах
+  <Card title="Loading State" icon="spinner">
+    Хайлт хийж байх үед хэрэглэгчид харуулах
   </Card>
   
-  <Card title="Form цэвэрлэх" icon="broom">
-    Амжилттай илгээсний дараа form-г цэвэрлэх
+  <Card title="Debouncing" icon="clock">
+    Хэрэглэгч асуулт бичиж байх үед API дуудахгүй байх
   </Card>
 </CardGroup>
 
 ---
 
-## Email Template
+## Rate Limiting
 
-Админд ирэх и-мэйлийн загвар:
-
-```
-From: {from}
-Subject: [Yellow Book] {subject}
-
-{body}
-
----
-Илгээсэн: Yellow Book системээс
-Огноо: {timestamp}
-```
+<Warning>
+  - **Лимит:** 100 хүсэлт/минут
+  - **Burst:** 20 хүсэлт/секунд
+  
+  AI хайлт нь илүү их тооцоолол шаарддаг тул rate limit-ийг мөрдөнө үү.
+</Warning>
 
 ---
 
-## Security
+## Limitations
 
-<AccordionGroup>
-  <Accordion title="И-мэйл баталгаажуулалт" icon="shield-check">
-    И-мэйл хаяг баталгаажуулалт шаардагдана
-  </Accordion>
-  
-  <Accordion title="HTML injection эсэргүүцэл" icon="code">
-    HTML injection эсэргүүцэл идэвхтэй
-  </Accordion>
-  
-  <Accordion title="Rate limiting" icon="gauge-high">
-    Rate limiting хэрэгждэг
-  </Accordion>
-  
-  <Accordion title="Спам фильтр" icon="filter">
-    Спам фильтр идэвхтэй
-  </Accordion>
-</AccordionGroup>
+<Info>
+  - Асуулт **500 тэмдэгтээс** хэтрэхгүй байх
+  - Байршлын мэдээлэл (GPS) байхгүй тул "ойролцоо" гэх хайлтууд бүх дүүргийн үр дүн өгнө
+  - AI нь зөвхөн системд бүртгэгдсэн байгууллагуудыг олох боломжтой
+  - AI хайлтын үр дүн **100% үнэн зөв** биш байж болно
+</Info>
 
 ---
 
 ## Notes
 
-<Info>
-  - И-мэйл нь **админд шууд очино**
-  - Хариулт **1-2 ажлын өдрийн** дотор ирнэ
-  - **Яаралтай** асуудлын хувьд утасаар холбогдоно уу: +976-7000-0000
-  - Spam и-мэйл илгээх нь хориотой
-</Info>
+<AccordionGroup>
+  <Accordion title="Хэл дэмжлэг" icon="language">
+    AI хайлт нь **Монгол хэл** дээрх асуултыг ойлгодог. Хариулт нь **Монгол хэл** дээр өгөгдөнө.
+  </Accordion>
+  
+  <Accordion title="Үр дүнг нарийвчлах" icon="bullseye">
+    Үр дүнг илүү нарийвчлах бол `/directory` эсвэл `/organization/{id}` endpoint ашиглана
+  </Accordion>
+  
+  <Accordion title="Системд бүртгэлгүй" icon="circle-xmark">
+    AI нь зөвхөн системд бүртгэгдсэн байгууллагуудыг олох боломжтой
+  </Accordion>
+</AccordionGroup>
 
 ---
 
-## Related
+## Related Endpoints
 
 <CardGroup cols={3}>
-  <Card title="API Танилцуулга" icon="book" href="/api-reference/introduction">
-    API танилцуулга
+  <Card title="Жагсаалт" icon="list" href="/api-reference/endpoint/directory">
+    GET /directory
   </Card>
   
-  <Card title="Тусламж" icon="life-ring" href="mailto:support@yellowbook.mn">
-    support@yellowbook.mn
+  <Card title="Дэлгэрэнгүй" icon="building" href="/api-reference/endpoint/organization">
+    GET /organization/{id}
   </Card>
   
-  <Card title="Утас" icon="phone" href="tel:+97670000000">
-    +976-7000-0000
+  <Card title="Админ и-мэйл" icon="envelope" href="/api-reference/endpoint/admin-email">
+    POST /admin/email
   </Card>
 </CardGroup>
