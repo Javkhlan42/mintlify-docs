@@ -1,4 +1,91 @@
 ---
-title: 'Create Plant'
-openapi: 'POST /plants'
+title: 'Харилцагч үүсгэх'
+openapi: 'POST /bnpl/merge/user'
 ---
+
+## Харилцагч үүсгэх
+
+Харилцагч үүссэн бол үүссэн харилцагчийн ID-г, үүсээгүй бол шинээр үүсгээд ID-г буцаана.
+
+### Endpoint
+
+`POST /bnpl/merge/user`
+
+### Authorization
+
+HTTP Basic Authentication. Username болон password-г base64 encode хийж Authorization header-т илгээнэ.
+
+```
+Authorization: Basic <encoded-value>
+Content-Type: application/json
+```
+
+### Request Body
+
+| Талбар         | Төрөл    | Заавал | Тайлбар                |
+|----------------|----------|--------|------------------------|
+| mobileNumber   | string   | ✓      | Утасны дугаар (8 оронтой) |
+| registerCode   | string   | ✓      | Регистрийн дугаар (10 тэмдэгт) |
+| firstName      | string   | ✓      | Нэр (1-50 тэмдэгт)     |
+| lastName       | string   | ✓      | Овог (1-50 тэмдэгт)    |
+| userAcct       | string   | ✓      | Дансны дугаар         |
+| familyName     | string   |        | Ургийн овог            |
+| refMobile      | string   |        | Холбоо барих дугаар    |
+| refMobile1     | string   |        | Холбоо барих дугаар (1) |
+| eduLevelId     | enum     |        | Боловсролын түвшин (1,2,4,5,6) |
+| work           | string   |        | Ажлын газар            |
+| address        | string   |        | Хаяг                   |
+
+#### Жишээ хүсэлт
+
+```json
+{
+	"mobileNumber": "90082380",
+	"registerCode": "ИИ99651452",
+	"firstName": "Батням",
+	"lastName": "Гантулга",
+	"userAcct": "1234567890"
+}
+```
+
+### cURL жишээ
+
+```bash
+curl --request POST \
+	--url https://api.example.com/bnpl/merge/user \
+	--header 'Authorization: Basic <encoded-value>' \
+	--header 'Content-Type: application/json' \
+	--data '{
+		"mobileNumber": "90082380",
+		"registerCode": "ИИ99651452",
+		"firstName": "Батням",
+		"lastName": "Гантулга",
+		"userAcct": "1234567890"
+	}'
+```
+
+### Амжилттай хариу (Response)
+
+```json
+{
+	"value": 269912,
+	"data": null,
+	"msgList": [],
+	"attrs": {},
+	"status": "Success"
+}
+```
+
+### Алдааны хариу (жишээ)
+
+```json
+{
+	"value": null,
+	"data": null,
+	"msgList": [
+		"Регистрийн дугаар давхцаж байна"
+	],
+	"attrs": {},
+	"status": "Error"
+}
+```
