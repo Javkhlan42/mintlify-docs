@@ -1,0 +1,444 @@
+---
+title: 'Нүүр хуудас'
+api: 'GET /'
+description: 'Yellow Book системийн үндсэн нүүр хуудас'
+---
+
+<Note>
+  Энэхүү endpoint нь **Yellow Book системийн нүүр хуудас** бөгөөд хэрэглэгчдэд системийн үндсэн интерфейс, хайлтын боломжуудыг олгоно.
+</Note>
+
+## Endpoint
+
+```
+https://sharnom.systems/
+```
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://sharnom.systems/"
+```
+
+```javascript JavaScript
+async function loadHomePage() {
+  const response = await fetch('https://sharnom.systems/');
+  const html = await response.text();
+  return html;
+}
+```
+
+```python Python
+import requests
+
+def load_home_page():
+    response = requests.get("https://sharnom.systems/")
+    return response.text
+
+html = load_home_page()
+print("Home page loaded successfully")
+```
+</CodeGroup>
+
+---
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Хайлтын талбар" icon="magnifying-glass">
+    Байгууллагын мэдээллийг хайх үндсэн хайлтын талбар
+  </Card>
+  
+  <Card title="AI Assistant" icon="robot">
+    AI Assistant руу хандах холбоос
+  </Card>
+  
+  <Card title="Жагсаалт" icon="list">
+    Бүх байгууллагын жагсаалт руу очих
+  </Card>
+  
+  <Card title="Холбоо барих" icon="envelope">
+    Админд мессеж илгээх хэсэг
+  </Card>
+</CardGroup>
+
+### Хайлтын боломжууд
+
+<Tabs>
+  <Tab title="Нэрээр" icon="text">
+    Байгууллагын нэрээр хайх
+  </Tab>
+  
+  <Tab title="Түлхүүр үгээр" icon="key">
+    Түлхүүр үгээр хайх
+  </Tab>
+  
+  <Tab title="Дүүргээр" icon="location-dot">
+    Дүүргээр шүүх
+  </Tab>
+  
+  <Tab title="Ангиллаар" icon="tag">
+    Ангиллаар шүүх
+  </Tab>
+</Tabs>
+
+---
+
+## Navigation Links
+
+Нүүр хуудас дээрх үндсэн холбоосууд:
+
+| Холбоос | URL | Тайлбар |
+|---------|-----|---------|
+| Нүүр | `/` | Нүүр хуудас |
+| Жагсаалт | `/directory` | Бүх байгууллагын жагсаалт |
+| AI Assistant | `/yellow-books/assistant` | AI хайлт |
+| Холбоо барих | `/admin/email` | Админд мессеж илгээх |
+
+---
+
+## Usage Examples
+
+<AccordionGroup>
+  <Accordion title="iFrame Integration" icon="window">
+    ```html
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Yellow Book Integration</title>
+    </head>
+    <body>
+        <h1>Yellow Book Байгууллагын мэдээлэл</h1>
+        <iframe 
+            src="https://sharnom.systems/" 
+            width="100%" 
+            height="600px"
+            frameborder="0">
+        </iframe>
+    </body>
+    </html>
+    ```
+  </Accordion>
+  
+  <Accordion title="Redirecting" icon="arrow-right">
+    ```javascript
+    // Шууд очих
+    function goToYellowBook() {
+      window.location.href = 'https://sharnom.systems/';
+    }
+
+    // Шинэ tab-д нээх
+    function openYellowBookInNewTab() {
+      window.open('https://sharnom.systems/', '_blank');
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="Status Check" icon="circle-check">
+    ```javascript
+    async function checkHomePageStatus() {
+      try {
+        const response = await fetch('https://sharnom.systems/', {
+          method: 'HEAD'
+        });
+        
+        return {
+          available: response.ok,
+          status: response.status
+        };
+      } catch (error) {
+        return {
+          available: false,
+          error: error.message
+        };
+      }
+    }
+
+    // Ашиглалт
+    const status = await checkHomePageStatus();
+    if (status.available) {
+      console.log('Yellow Book нээлттэй байна');
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="Deep Linking" icon="link">
+    ```javascript
+    // Тодорхой байгууллага руу шууд очих
+    function goToOrganization(orgId) {
+      window.location.href = 
+        `https://sharnom.systems/organization/${orgId}`;
+    }
+
+    // Ашиглалт
+    goToOrganization('1'); // ID=1 байгууллага руу очих
+    ```
+  </Accordion>
+  
+  <Accordion title="External Search" icon="magnifying-glass">
+    ```html
+    <!-- Өөр вебсайтаас Yellow Book-д хайлт явуулах -->
+    <form action="https://sharnom.systems/directory" method="get">
+      <input 
+        type="text" 
+        name="search" 
+        placeholder="Байгууллага хайх..."
+      >
+      <button type="submit">Хайх</button>
+    </form>
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## SEO & Meta Information
+
+Нүүр хуудас дараах SEO мэдээллүүдтэй:
+
+```html
+<meta 
+  name="description" 
+  content="Yellow Book - Монгол Улсын байгууллагуудын 
+           холбоо барих мэдээлэл, хаяг, утас, и-мэйл"
+>
+<meta 
+  name="keywords" 
+  content="yellow book, байгууллага, хаяг, утас, 
+           и-мэйл, монгол"
+>
+<meta 
+  property="og:title" 
+  content="Yellow Book - Байгууллагын мэдээлэл"
+>
+<meta 
+  property="og:description" 
+  content="Байгууллагын мэдээллийг хайх, харах"
+>
+<meta 
+  property="og:url" 
+  content="https://sharnom.systems/"
+>
+```
+
+---
+
+## Responsive Design
+
+<CardGroup cols={2}>
+  <Card title="Desktop" icon="desktop">
+    💻 1920x1080+
+    
+    💻 1366x768+
+  </Card>
+  
+  <Card title="Mobile" icon="mobile">
+    📱 Tablet (768x1024)
+    
+    📱 Mobile (375x667+)
+  </Card>
+</CardGroup>
+
+---
+
+## Browser Compatibility
+
+| Хөтөч | Дэмжлэг |
+|-------|---------|
+| Chrome | ✅ Бүрэн дэмжлэг |
+| Firefox | ✅ Бүрэн дэмжлэг |
+| Edge | ✅ Бүрэн дэмжлэг |
+| Safari | ✅ Бүрэн дэмжлэг |
+| IE 11 | ❌ Дэмжигдэхгүй |
+
+---
+
+## Performance
+
+<AccordionGroup>
+  <Accordion title="Loading Time" icon="stopwatch">
+    - **Эхний ачаалалт:** ~1.5s
+    - **Дахин ачаалалт (cached):** ~0.3s
+  </Accordion>
+  
+  <Accordion title="Optimization" icon="gauge-high">
+    - Image lazy loading
+    - CSS минификаци
+    - JavaScript bundling
+    - CDN ашиглалт
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Accessibility
+
+Нүүр хуудас нь **WCAG 2.1 Level AA** стандартыг дагаж мөрддөг:
+
+<CardGroup cols={2}>
+  <Card title="Keyboard Navigation" icon="keyboard">
+    Keyboard-оор навигаци хийх
+  </Card>
+  
+  <Card title="Screen Reader" icon="audio-description">
+    Screen reader дэмжлэг
+  </Card>
+  
+  <Card title="High Contrast" icon="circle-half-stroke">
+    High contrast mode
+  </Card>
+  
+  <Card title="Alt Text" icon="image">
+    Бүх зураг дээр alt text
+  </Card>
+</CardGroup>
+
+---
+
+## Analytics
+
+Нүүр хуудсанд дараах үйлдлүүдийг tracking хийнэ:
+
+- 📊 Хуудас ачаалалт
+- 🔍 Хайлтын тоо
+- 🏢 Байгууллага сонгосон тоо
+- 📉 Bounce rate
+- ⏱️ Session duration
+
+---
+
+## Error Handling
+
+<Tabs>
+  <Tab title="Хуудас ачааллахгүй">
+    ```javascript
+    async function loadHomePageWithRetry(maxRetries = 3) {
+      for (let i = 0; i < maxRetries; i++) {
+        try {
+          const response = await fetch('https://sharnom.systems/');
+          if (response.ok) {
+            return await response.text();
+          }
+        } catch (error) {
+          console.error(`Оролдлого ${i + 1} амжилтгүй:`, error);
+          
+          if (i === maxRetries - 1) {
+            throw new Error('Хуудас ачааллаж чадсангүй');
+          }
+          
+          // 1 секунд хүлээх
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Timeout handling">
+    ```javascript
+    async function loadWithTimeout(timeout = 5000) {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      
+      try {
+        const response = await fetch('https://sharnom.systems/', {
+          signal: controller.signal
+        });
+        clearTimeout(id);
+        return await response.text();
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          throw new Error('Request timeout');
+        }
+        throw error;
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Technical Details
+
+<AccordionGroup>
+  <Accordion title="Rendering" icon="paintbrush">
+    Нүүр хуудас нь **server-side rendered** (SSR)
+  </Accordion>
+  
+  <Accordion title="Caching" icon="database">
+    Cache хугацаа: **5 минут**
+  </Accordion>
+  
+  <Accordion title="CDN" icon="server">
+    CDN ашиглагдана: Cloudflare
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Security
+
+<CardGroup cols={2}>
+  <Card title="HTTPS" icon="lock">
+    HTTPS шаардлагатай
+  </Card>
+  
+  <Card title="CORS" icon="shield">
+    CORS хязгаарлалт идэвхтэй
+  </Card>
+  
+  <Card title="XSS Protection" icon="shield-virus">
+    XSS эсэргүүцэл
+  </Card>
+  
+  <Card title="CSRF Token" icon="key">
+    CSRF токен ашиглагдана
+  </Card>
+</CardGroup>
+
+---
+
+## Notes
+
+<Info>
+  - Нүүр хуудас нь server-side rendered (SSR)
+  - Хайлтын үр дүн нь client-side rendered
+  - Cache хугацаа: 5 минут
+  - CDN: Cloudflare
+</Info>
+
+---
+
+## Related Endpoints
+
+<CardGroup cols={3}>
+  <Card title="Жагсаалт" icon="list" href="/api-reference/endpoint/directory">
+    GET /directory
+  </Card>
+  
+  <Card title="Дэлгэрэнгүй" icon="building" href="/api-reference/endpoint/organization">
+    GET /organization/{id}
+  </Card>
+  
+  <Card title="AI хайлт" icon="robot" href="/api-reference/endpoint/assistant">
+    POST /yellow-books/assistant
+  </Card>
+</CardGroup>
+
+---
+
+## Support
+
+<CardGroup cols={2}>
+  <Card title="Email дэмжлэг" icon="envelope" href="mailto:support@yellowbook.mn">
+    support@yellowbook.mn
+  </Card>
+  
+  <Card title="Утас" icon="phone" href="tel:+97670000000">
+    +976-7000-0000
+  </Card>
+</CardGroup>
+
+<Tip>
+  Таны Yellow Book ашиглахад амжилт хүсье! 🎉
+</Tip>

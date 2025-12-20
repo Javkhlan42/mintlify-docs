@@ -1,99 +1,368 @@
+---
 title: 'Yellow Book API Танилцуулга'
-description: 'Yellow Book системийн байгууллагын мэдээлэл хайх, дэлгэрэнгүй харах, холбоо барих API-ийн дэлгэрэнгүй танилцуулга'
+description: 'Байгууллагын мэдээлэл хайх, дэлгэрэнгүй харах, холбоо барих API'
+icon: 'book-open'
 ---
 
-
 <Note>
-  Энэхүү API нь байгууллагын мэдээллийг хайх, дэлгэрэнгүй харах, холбоо барих болон webhook-оор шинэчлэл хүлээн авах боломжийг олгоно. Доорх заавар, бүтэц, жишээг developer-д зориулан дэлгэрэнгүй оруулав.
+  Энэхүү API нь байгууллагын мэдээллийг хайх, дэлгэрэнгүй харах, холбоо барих болон webhook-оор шинэчлэл хүлээн авах боломжийг олгоно.
 </Note>
-
 
 ## Ерөнхий мэдээлэл
 
-Yellow Book API нь байгууллагын мэдээллийг хайх, дэлгэрэнгүй харах, холбоо барих болон webhook-оор шинэчлэл хүлээн авах RESTful API юм.
+Yellow Book API нь байгууллагын мэдээллийг хайх, дэлгэрэнгүй харах, холбоо барих болон webhook-оор шинэчлэл хүлээн авах **RESTful API** юм.
+
+<CardGroup cols={2}>
+  <Card title="Хайлт хийх" icon="magnifying-glass" href="/api-reference/endpoint/directory">
+    Бүх байгууллагын жагсаалт авах
+  </Card>
+  <Card title="Дэлгэрэнгүй харах" icon="building" href="/api-reference/endpoint/organization">
+    Байгууллагын бүрэн мэдээлэл
+  </Card>
+  <Card title="AI Assistant" icon="robot" href="/api-reference/endpoint/assistant">
+    Асуултаар хайлт хийх
+  </Card>
+  <Card title="Админ холбоо барих" icon="envelope" href="/api-reference/endpoint/admin-email">
+    И-мэйл илгээх
+  </Card>
+</CardGroup>
 
 ## Үндсэн боломжууд
 
-- Байгууллага хайх (нэр, түлхүүр үг, дүүрэг, ангилал)
-- Байгууллагын дэлгэрэнгүй мэдээлэл авах
-- Холбоо барих утас, и-мэйл авах
-- Байгууллагын өөрчлөлтийн webhook (админ)
+<AccordionGroup>
+  <Accordion title="Байгууллага хайх" icon="search">
+    Нэр, түлхүүр үг, дүүрэг, ангилалаар байгууллага хайх боломжтой
+  </Accordion>
+  
+  <Accordion title="Дэлгэрэнгүй мэдээлэл авах" icon="circle-info">
+    Байгууллагын бүрэн мэдээлэл: нэр, хаяг, утас, и-мэйл, вебсайт
+  </Accordion>
+  
+  <Accordion title="AI хайлт" icon="sparkles">
+    Байгалийн хэл дээрх асуултаар байгууллага хайх
+  </Accordion>
+  
+  <Accordion title="Админд хүсэлт илгээх" icon="paper-plane">
+    Мэдээлэл засварлах, нэмэх хүсэлт илгээх
+  </Accordion>
+</AccordionGroup>
+
+---
 
 ## API Base URL
 
 Бүх API хүсэлтүүд дараах суурь URL-аас эхэлнэ:
 
-```
-https://api.yellowbook.mn/v1
-```
-
-## Баталгаажуулалт (Authentication)
-
-Ихэнх endpoint-ууд нээлттэй (public) боловч заримад нь API key эсвэл Bearer token шаардлагатай байж болно.
-
-### Жишээ:
-
-**Public endpoint:**
 ```bash
-curl -X GET "https://api.yellowbook.mn/v1/organizations/search?query=кофе" 
+https://sharnom.systems
 ```
 
-**Token шаардлагатай endpoint:**
+### Endpoint-үүдийн жагсаалт
+
+| Endpoint | Төрөл | Зориулалт |
+|----------|------|-----------|
+| `/` | GET | Нүүр хуудас |
+| `/directory` | GET | Бүх байгууллагын жагсаалт |
+| `/organization/{id}` | GET | Байгууллагын дэлгэрэнгүй |
+| `/yellow-books/assistant` | POST | AI Assistant хайлт |
+| `/admin/email` | POST | Админд и-мэйл илгээх |
+
+---
+
+## Баталгаажуулалт
+
+<Info>
+  Ихэнх endpoint-ууд **нээлттэй (public)** боловч заримад нь API key эсвэл Bearer token шаардлагатай байж болно.
+</Info>
+
+### Public endpoint
+
 ```bash
-curl -X GET "https://api.yellowbook.mn/v1/organizations/123" \
+curl -X GET "https://sharnom.systems/directory?page=1&pageSize=20"
+```
+
+### Token шаардлагатай endpoint
+
+```bash
+curl -X GET "https://sharnom.systems/organization/123" \
   -H "Authorization: Bearer <access_token>"
 ```
+
+---
 
 ## Стандарт хариултын бүтэц
 
 Бүх API endpoint-үүд стандарт бүтэцтэй JSON хариулт буцаана:
+
 ```json
 {
-  "value": <Үндсэн өгөгдөл>,
-  "data": <Нэмэлт өгөгдөл эсвэл null>,
-  "msgList": [<мэдэгдэл>],
-  "attrs": {<нэмэлт атрибут>},
+  "value": "<Үндсэн өгөгдөл>",
+  "data": "<Нэмэлт өгөгдөл эсвэл null>",
+  "msgList": ["<мэдэгдэл>"],
+  "attrs": {"<нэмэлт атрибут>"},
   "status": "Success" | "Error"
 }
 ```
 
+<Tabs>
+  <Tab title="Success Response">
+    ```json
+    {
+      "value": [
+        {
+          "id": "1",
+          "name": "Кофе хаус",
+          "category": "Зоогийн газар",
+          "address": "Сүхбаатар дүүрэг, 1-р хороо"
+        }
+      ],
+      "data": null,
+      "msgList": [],
+      "attrs": {
+        "totalCount": 150,
+        "currentPage": 1
+      },
+      "status": "Success"
+    }
+    ```
+  </Tab>
+  <Tab title="Error Response">
+    ```json
+    {
+      "value": null,
+      "data": null,
+      "msgList": ["Байгууллага олдсонгүй"],
+      "attrs": {},
+      "status": "Error"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Талбаруудын тайлбар
+
+| Талбар | Төрөл | Тайлбар |
+|--------|------|---------|
+| `value` | any | Үндсэн өгөгдөл (байгууллагын жагсаалт, дэлгэрэнгүй мэдээлэл) |
+| `data` | object/null | Нэмэлт өгөгдөл (ихэвчлэн null) |
+| `msgList` | array | Мэдэгдэл, алдааны мессежүүд |
+| `attrs` | object | Нэмэлт атрибутууд (totalCount, currentPage гэх мэт) |
+| `status` | string | `"Success"` эсвэл `"Error"` |
+
+---
+
 ## Алдааны кодууд
 
-| HTTP Code | Тайлбар                | Шийдэл                        |
-|-----------|------------------------|-------------------------------|
-| 200       | Амжилттай              | -                             |
-| 400       | Буруу хүсэлт           | Параметр, body шалгах         |
-| 401       | Баталгаажуулалт амжилтгүй | Token, эрх шалгах         |
-| 403       | Хандах эрхгүй          | Эрхийн тохиргоо шалгах        |
-| 404       | Өгөгдөл олдсонгүй      | ID, параметр зөв эсэхийг шалгах |
-| 429       | Rate limit хэтэрсэн    | Түр хүлээгээд дахин оролдох   |
-| 500       | Серверийн алдаа        | Дахин оролдох, support-той холбогдох |
+<ResponseField name="200 OK" type="success">
+  Хүсэлт амжилттай
+</ResponseField>
 
-### Алдааны хариултын жишээ
-```json
-{
-  "value": null,
-  "data": null,
-  "msgList": ["Байгууллага олдсонгүй"],
-  "attrs": {},
-  "status": "Error"
-}
-```
+<ResponseField name="400 Bad Request" type="error">
+  Буруу хүсэлт - Параметр, body шалгах
+</ResponseField>
+
+<ResponseField name="401 Unauthorized" type="error">
+  Баталгаажуулалт амжилтгүй - Token, эрх шалгах
+</ResponseField>
+
+<ResponseField name="403 Forbidden" type="error">
+  Хандах эрхгүй - Эрхийн тохиргоо шалгах
+</ResponseField>
+
+<ResponseField name="404 Not Found" type="error">
+  Өгөгдөл олдсонгүй - ID, параметр зөв эсэхийг шалгах
+</ResponseField>
+
+<ResponseField name="429 Too Many Requests" type="error">
+  Rate limit хэтэрсэн - Түр хүлээгээд дахин оролдох
+</ResponseField>
+
+<ResponseField name="500 Internal Server Error" type="error">
+  Серверийн алдаа - Дахин оролдох, support-той холбогдох
+</ResponseField>
+
+---
 
 ## Rate Limiting
 
-API хүсэлтүүд rate limit-тэй:
-- Стандарт лимит: 100 хүсэлт/минут, endpoint бүрээр
-- Burst лимит: 20 хүсэлт/секунд
-Лимит хэтэрвэл HTTP 429 статус код буцаана.
+<Warning>
+  API хүсэлтүүд rate limit-тэй. Лимит хэтэрвэл HTTP 429 статус код буцаана.
+</Warning>
 
-## OpenAPI файл
+- **Стандарт лимит:** 100 хүсэлт/минут, endpoint бүрээр
+- **Burst лимит:** 20 хүсэлт/секунд
 
-API-ийн дэлгэрэнгүй тодорхойлолт нь [`api-reference/openapi.json`](./openapi.json) файлд байрлана. Тэр файлыг ашиглан API playground болон код генераци хийх боломжтой.
+### Rate Limit Header-үүд
+
+```http
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1672531200
+```
+
+---
+
+## Pagination
+
+Хайлтын үр дүнгүүд **хуудаслалттай (pagination)** буцаана.
+
+| Параметр | Төрөл | Default | Тайлбар |
+|----------|------|---------|---------|
+| `page` | integer | 1 | Хуудасны дугаар |
+| `pageSize` | integer | 20 | Хуудасны хэмжээ (max: 100) |
+
+### Жишээ
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://sharnom.systems/directory?page=2&pageSize=50"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://sharnom.systems/directory?page=2&pageSize=50'
+);
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    "https://sharnom.systems/directory",
+    params={"page": 2, "pageSize": 50}
+)
+data = response.json()
+```
+
+</CodeGroup>
+
+---
+
+## Хурдан эхлэх
+
+<Steps>
+  <Step title="API URL-тэй танилцах">
+    Base URL: `https://sharnom.systems`
+  </Step>
+  
+  <Step title="Эхний хүсэлт явуулах">
+    ```bash
+    curl -X GET "https://sharnom.systems/directory"
+    ```
+  </Step>
+  
+  <Step title="Хариултыг боловсруулах">
+    ```javascript
+    const data = await response.json();
+    if (data.status === 'Success') {
+      console.log('Байгууллагууд:', data.value);
+    }
+    ```
+  </Step>
+  
+  <Step title="Дэлгэрэнгүй endpoint-тай ажиллах">
+    [Endpoint документууд](/api-reference/endpoint/directory)-тай танилцах
+  </Step>
+</Steps>
+
+---
+
+## Code жишээнүүд
+
+<CodeGroup>
+
+```javascript JavaScript
+async function searchOrganizations() {
+  const response = await fetch(
+    'https://sharnom.systems/directory?page=1&pageSize=20'
+  );
+  const data = await response.json();
+  
+  if (data.status === 'Success') {
+    console.log('Байгууллагууд:', data.value);
+  } else {
+    console.error('Алдаа:', data.msgList);
+  }
+}
+```
+
+```python Python
+import requests
+
+def search_organizations():
+    url = "https://sharnom.systems/directory"
+    params = {"page": 1, "pageSize": 20}
+    
+    response = requests.get(url, params=params)
+    data = response.json()
+    
+    if data['status'] == 'Success':
+        print('Байгууллагууд:', data['value'])
+    else:
+        print('Алдаа:', data['msgList'])
+```
+
+```bash cURL
+curl -X GET "https://sharnom.systems/directory?page=1&pageSize=20"
+```
+
+```typescript TypeScript
+interface SearchResponse {
+  value: Organization[];
+  status: 'Success' | 'Error';
+  msgList: string[];
+  attrs: {
+    totalCount: number;
+    currentPage: number;
+  };
+}
+
+async function searchOrganizations(): Promise<SearchResponse> {
+  const response = await fetch(
+    'https://sharnom.systems/directory?page=1&pageSize=20'
+  );
+  return await response.json();
+}
+```
+
+</CodeGroup>
+
+---
+
+## OpenAPI Specification
+
+<Card title="OpenAPI файл татах" icon="download" href="/api-reference/openapi.json">
+  API-ийн дэлгэрэнгүй тодорхойлолт OpenAPI 3.1.0 форматтай
+</Card>
+
+OpenAPI файлыг ашиглан:
+- 🎮 API Playground хийх
+- 🔧 Код автоматаар генерациялах
+- 📮 Postman Collection үүсгэх
+
+---
 
 ## Тусламж авах
 
-Техникийн дэмжлэг: support@yellowbook.mn
-Утас: +976-7000-0000
-Шинэчлэлтийн мэдээллийг манай вебсайтаас харна уу.
+<CardGroup cols={2}>
+  <Card title="Email дэмжлэг" icon="envelope">
+    support@yellowbook.mn
+  </Card>
+  <Card title="Утас" icon="phone">
+    +976-7000-0000
+  </Card>
+  <Card title="Getting Started" icon="rocket" href="/getting-started">
+    Эхлэх заавар
+  </Card>
+  <Card title="Procedure" icon="list-check" href="/procedure">
+    Процедурын заавар
+  </Card>
+</CardGroup>
 
+---
+
+<Info>
+  **Шинэчлэлтийн мэдээлэл:** API-ийн шинэчлэлт болон өөрчлөлтийн талаар манай вебсайтаас үзнэ үү.
+</Info>

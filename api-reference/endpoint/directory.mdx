@@ -1,0 +1,473 @@
+---
+title: 'Байгууллагын жагсаалт'
+api: 'GET /directory'
+description: 'Бүх байгууллагын жагсаалтыг хуудаслалттай авах'
+---
+
+<Note>
+  Энэхүү endpoint нь Yellow Book системд бүртгэгдсэн бүх байгууллагын жагсаалтыг **хуудаслалттай (pagination)** буцаана.
+</Note>
+
+## Endpoint
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://sharnom.systems/directory?page=1&pageSize=20"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://sharnom.systems/directory?page=1&pageSize=20'
+);
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    "https://sharnom.systems/directory",
+    params={"page": 1, "pageSize": 20}
+)
+data = response.json()
+```
+</CodeGroup>
+
+---
+
+## Query Parameters
+
+<ParamField query="page" type="integer" default="1">
+  Хуудасны дугаар (минимум: 1)
+</ParamField>
+
+<ParamField query="pageSize" type="integer" default="20">
+  Хуудасны хэмжээ (минимум: 1, максимум: 100)
+</ParamField>
+
+---
+
+## Response
+
+<ResponseField name="value" type="array">
+  Байгууллагуудын жагсаалт
+  
+  <Expandable title="Organization объект">
+    <ResponseField name="id" type="string">
+      Байгууллагын уникаль ID
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Байгууллагын нэр
+    </ResponseField>
+    
+    <ResponseField name="category" type="string">
+      Үйл ажиллагааны чиглэл / Ангилал
+    </ResponseField>
+    
+    <ResponseField name="address" type="string">
+      Хаяг
+    </ResponseField>
+    
+    <ResponseField name="district" type="string">
+      Дүүрэг
+    </ResponseField>
+    
+    <ResponseField name="phone" type="string">
+      Утасны дугаар
+    </ResponseField>
+    
+    <ResponseField name="email" type="string">
+      И-мэйл хаяг
+    </ResponseField>
+    
+    <ResponseField name="website" type="string">
+      Вебсайт URL
+    </ResponseField>
+    
+    <ResponseField name="latitude" type="number">
+      Өргөрөг (GPS координат)
+    </ResponseField>
+    
+    <ResponseField name="longitude" type="number">
+      Уртраг (GPS координат)
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="data" type="null">
+  Нэмэлт өгөгдөл (ихэвчлэн null)
+</ResponseField>
+
+<ResponseField name="msgList" type="array">
+  Мэдэгдлүүд
+</ResponseField>
+
+<ResponseField name="attrs" type="object">
+  Хуудаслалтын мэдээлэл
+  
+  <Expandable title="Pagination мэдээлэл">
+    <ResponseField name="totalCount" type="integer">
+      Нийт байгууллагын тоо
+    </ResponseField>
+    
+    <ResponseField name="currentPage" type="integer">
+      Одоогийн хуудас
+    </ResponseField>
+    
+    <ResponseField name="pageSize" type="integer">
+      Хуудасны хэмжээ
+    </ResponseField>
+    
+    <ResponseField name="totalPages" type="integer">
+      Нийт хуудасны тоо
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  `"Success"` эсвэл `"Error"`
+</ResponseField>
+
+---
+
+## Response Examples
+
+<Tabs>
+  <Tab title="Success (200)">
+    ```json
+    {
+      "value": [
+        {
+          "id": "1",
+          "name": "Кофе хаус",
+          "category": "Зоогийн газар",
+          "address": "Сүхбаатар дүүрэг, 1-р хороо",
+          "district": "Сүхбаатар",
+          "phone": "7000-0001",
+          "email": "info@coffeehouse.mn",
+          "website": "https://coffeehouse.mn",
+          "latitude": 47.9186,
+          "longitude": 106.9177
+        },
+        {
+          "id": "2",
+          "name": "Монгол банк",
+          "category": "Санхүүгийн байгууллага",
+          "address": "Чингэлтэй дүүрэг, 4-р хороо",
+          "district": "Чингэлтэй",
+          "phone": "7000-0002",
+          "email": "info@mongolbank.mn",
+          "website": "https://mongolbank.mn",
+          "latitude": 47.9213,
+          "longitude": 106.9152
+        }
+      ],
+      "data": null,
+      "msgList": [],
+      "attrs": {
+        "totalCount": 500,
+        "currentPage": 1,
+        "pageSize": 20,
+        "totalPages": 25
+      },
+      "status": "Success"
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Error (400)">
+    ```json
+    {
+      "value": null,
+      "data": null,
+      "msgList": [
+        "page параметр 1-ээс их байх ёстой",
+        "pageSize параметр 1-100 хооронд байх ёстой"
+      ],
+      "attrs": {},
+      "status": "Error"
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Rate Limit (429)">
+    ```json
+    {
+      "value": null,
+      "data": null,
+      "msgList": [
+        "Rate limit хэтэрсэн. Түр хүлээгээд дахин оролдоно уу."
+      ],
+      "attrs": {
+        "retryAfter": 60
+      },
+      "status": "Error"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Code Examples
+
+<CodeGroup>
+
+```javascript JavaScript - Fetch API
+async function getOrganizations(page = 1, pageSize = 20) {
+  const response = await fetch(
+    `https://sharnom.systems/directory?page=${page}&pageSize=${pageSize}`
+  );
+  const data = await response.json();
+  return data;
+}
+
+// Ашиглалт
+getOrganizations(1, 20).then(data => {
+  console.log('Байгууллагууд:', data.value);
+  console.log('Нийт тоо:', data.attrs.totalCount);
+});
+```
+
+```python Python - requests
+import requests
+
+def get_organizations(page=1, page_size=20):
+    url = "https://sharnom.systems/directory"
+    params = {
+        "page": page,
+        "pageSize": page_size
+    }
+    response = requests.get(url, params=params)
+    return response.json()
+
+# Ашиглалт
+data = get_organizations(page=1, page_size=20)
+print(f"Байгууллагын тоо: {len(data['value'])}")
+```
+
+```typescript TypeScript
+interface Organization {
+  id: string;
+  name: string;
+  category: string;
+  address: string;
+  district: string;
+  phone: string;
+  email: string;
+  website: string;
+  latitude: number;
+  longitude: number;
+}
+
+interface DirectoryResponse {
+  value: Organization[];
+  data: null;
+  msgList: string[];
+  attrs: {
+    totalCount: number;
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+  };
+  status: 'Success' | 'Error';
+}
+
+async function getOrganizations(
+  page: number = 1,
+  pageSize: number = 20
+): Promise<DirectoryResponse> {
+  const response = await fetch(
+    `https://sharnom.systems/directory?page=${page}&pageSize=${pageSize}`
+  );
+  return await response.json();
+}
+```
+
+</CodeGroup>
+
+---
+
+## Usage Examples
+
+<AccordionGroup>
+  <Accordion title="Бүх байгууллагыг хуудаслалтаар авах" icon="list">
+    ```javascript
+    async function getAllOrganizations() {
+      const allOrganizations = [];
+      let page = 1;
+      let totalPages = 1;
+      
+      while (page <= totalPages) {
+        const response = await fetch(
+          `https://sharnom.systems/directory?page=${page}&pageSize=100`
+        );
+        const data = await response.json();
+        
+        if (data.status === 'Success') {
+          allOrganizations.push(...data.value);
+          totalPages = data.attrs.totalPages;
+          page++;
+        } else {
+          console.error('Алдаа:', data.msgList);
+          break;
+        }
+      }
+      
+      return allOrganizations;
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="Дүүргээр шүүх" icon="filter">
+    ```javascript
+    async function getOrganizationsByDistrict(district) {
+      const response = await fetch(
+        'https://sharnom.systems/directory?pageSize=100'
+      );
+      const data = await response.json();
+      
+      if (data.status === 'Success') {
+        return data.value.filter(org => org.district === district);
+      }
+      return [];
+    }
+
+    // Ашиглалт
+    const sukhbaatarOrgs = await getOrganizationsByDistrict('Сүхбаатар');
+    console.log(`Сүхбаатар дүүрэгт ${sukhbaatarOrgs.length} байгууллага байна`);
+    ```
+  </Accordion>
+  
+  <Accordion title="React Component" icon="react">
+    ```jsx
+    import React, { useEffect, useState } from 'react';
+
+    function OrganizationList() {
+      const [organizations, setOrganizations] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [page, setPage] = useState(1);
+      const [totalPages, setTotalPages] = useState(1);
+      
+      useEffect(() => {
+        async function fetchOrganizations() {
+          setLoading(true);
+          try {
+            const response = await fetch(
+              `https://sharnom.systems/directory?page=${page}&pageSize=20`
+            );
+            const data = await response.json();
+            
+            if (data.status === 'Success') {
+              setOrganizations(data.value);
+              setTotalPages(data.attrs.totalPages);
+            }
+          } catch (error) {
+            console.error('Алдаа:', error);
+          } finally {
+            setLoading(false);
+          }
+        }
+        
+        fetchOrganizations();
+      }, [page]);
+      
+      if (loading) return <div>Уншиж байна...</div>;
+      
+      return (
+        <div>
+          <ul>
+            {organizations.map(org => (
+              <li key={org.id}>
+                <h3>{org.name}</h3>
+                <p>{org.address}</p>
+                <p>Утас: {org.phone}</p>
+              </li>
+            ))}
+          </ul>
+          
+          <div>
+            <button 
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+            >
+              Өмнөх
+            </button>
+            <span> Хуудас {page} / {totalPages} </span>
+            <button 
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+            >
+              Дараах
+            </button>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Rate Limiting
+
+<Warning>
+  - **Лимит:** 100 хүсэлт/минут
+  - **Burst:** 20 хүсэлт/секунд
+</Warning>
+
+Rate limit-ийн мэдээлэл response header-т агуулагдана:
+
+```http
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1672531200
+```
+
+---
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Pagination ашиглах" icon="list-ol">
+    Нэг дор бүх өгөгдөл татахын оронд pagination ашиглах нь илүү үр дүнтэй
+  </Card>
+  
+  <Card title="pageSize оновчтой сонгох" icon="sliders">
+    Хэт олон өгөгдөл хүсэхгүй байх (100-аас хэтрэхгүй)
+  </Card>
+  
+  <Card title="Error handling" icon="shield-exclamation">
+    Үргэлж алдааны тохиолдлыг боловсруулах
+  </Card>
+  
+  <Card title="Cache ашиглах" icon="database">
+    Өгөгдөл түр санах ойд хадгалж дахин ашиглах
+  </Card>
+</CardGroup>
+
+---
+
+## Notes
+
+<Info>
+  - Энэхүү endpoint нь **нээлттэй (public)** бөгөөд authentication шаардахгүй
+  - Өгөгдөл real-time шинэчлэгддэггүй, cache хийгдсэн байж болно
+  - Байгууллагын дэлгэрэнгүй мэдээллийг авахын тулд `/organization/{id}` endpoint ашиглана
+</Info>
+
+---
+
+## Related Endpoints
+
+<CardGroup cols={2}>
+  <Card title="Байгууллагын дэлгэрэнгүй" icon="building" href="/api-reference/endpoint/organization">
+    GET /organization/{id}
+  </Card>
+  
+  <Card title="AI Assistant хайлт" icon="robot" href="/api-reference/endpoint/assistant">
+    POST /yellow-books/assistant
+  </Card>
+</CardGroup>

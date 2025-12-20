@@ -1,0 +1,506 @@
+---
+title: 'Байгууллагын дэлгэрэнгүй'
+api: 'GET /organization/{id}'
+description: 'ID-аар байгууллагын дэлгэрэнгүй мэдээллийг авах'
+---
+
+<Note>
+  Энэхүү endpoint нь тодорхой байгууллагын **дэлгэрэнгүй мэдээллийг** ID-аар авна. Хариултад байгууллагын бүх үндсэн мэдээлэл багтана.
+</Note>
+
+## Endpoint
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://sharnom.systems/organization/1"
+```
+
+```javascript JavaScript
+const response = await fetch('https://sharnom.systems/organization/1');
+const data = await response.json();
+
+if (data.status === 'Success') {
+  console.log('Байгууллага:', data.value.name);
+}
+```
+
+```python Python
+import requests
+
+response = requests.get("https://sharnom.systems/organization/1")
+data = response.json()
+
+if data['status'] == 'Success':
+    print(f"Байгууллага: {data['value']['name']}")
+```
+</CodeGroup>
+
+---
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  Байгууллагын уникаль ID
+</ParamField>
+
+---
+
+## Response
+
+<ResponseField name="value" type="object">
+  Байгууллагын дэлгэрэнгүй мэдээлэл
+  
+  <Expandable title="Organization объект">
+    <ResponseField name="id" type="string" required>
+      Байгууллагын уникаль ID
+    </ResponseField>
+    
+    <ResponseField name="name" type="string" required>
+      Байгууллагын нэр
+    </ResponseField>
+    
+    <ResponseField name="category" type="string" required>
+      Үйл ажиллагааны чиглэл / Ангилал
+    </ResponseField>
+    
+    <ResponseField name="address" type="string" required>
+      Дэлгэрэнгүй хаяг
+    </ResponseField>
+    
+    <ResponseField name="district" type="string" required>
+      Дүүрэг
+    </ResponseField>
+    
+    <ResponseField name="phone" type="string" required>
+      Утасны дугаар
+    </ResponseField>
+    
+    <ResponseField name="email" type="string">
+      И-мэйл хаяг
+    </ResponseField>
+    
+    <ResponseField name="website" type="string">
+      Вебсайт URL
+    </ResponseField>
+    
+    <ResponseField name="latitude" type="number">
+      Өргөрөг (GPS координат)
+    </ResponseField>
+    
+    <ResponseField name="longitude" type="number">
+      Уртраг (GPS координат)
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Байгууллагын тайлбар
+    </ResponseField>
+    
+    <ResponseField name="workingHours" type="string">
+      Ажлын цаг
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="data" type="null">
+  Нэмэлт өгөгдөл (ихэвчлэн null)
+</ResponseField>
+
+<ResponseField name="msgList" type="array">
+  Мэдэгдлүүд
+</ResponseField>
+
+<ResponseField name="attrs" type="object">
+  Нэмэлт атрибутууд
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  `"Success"` эсвэл `"Error"`
+</ResponseField>
+
+---
+
+## Response Examples
+
+<Tabs>
+  <Tab title="Success (200)">
+    ```json
+    {
+      "value": {
+        "id": "1",
+        "name": "Кофе хаус",
+        "category": "Зоогийн газар",
+        "address": "Сүхбаатар дүүрэг, 1-р хороо, Бага тойруу 15",
+        "district": "Сүхбаатар",
+        "phone": "7000-0001",
+        "email": "info@coffeehouse.mn",
+        "website": "https://coffeehouse.mn",
+        "latitude": 47.9186,
+        "longitude": 106.9177,
+        "description": "Өдрийн кофе, амттан, цайны зардал. Найрсаг орчинд өдөр бүр үйлчилж байна.",
+        "workingHours": "09:00-22:00"
+      },
+      "data": null,
+      "msgList": [],
+      "attrs": {},
+      "status": "Success"
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Not Found (404)">
+    ```json
+    {
+      "value": null,
+      "data": null,
+      "msgList": [
+        "Байгууллага олдсонгүй"
+      ],
+      "attrs": {
+        "requestedId": "999"
+      },
+      "status": "Error"
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Bad Request (400)">
+    ```json
+    {
+      "value": null,
+      "data": null,
+      "msgList": [
+        "Байгууллагын ID буруу форматтай байна"
+      ],
+      "attrs": {},
+      "status": "Error"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Error Handling
+
+<AccordionGroup>
+  <Accordion title="404 Not Found" icon="circle-xmark">
+    **Шалтгаанууд:**
+    - Буруу ID оруулсан
+    - Байгууллага устгагдсан эсвэл идэвхгүй болсон
+    
+    **Шийдэл:**
+    - ID зөв эсэхийг шалгах
+    - `/directory` endpoint-аар бүх байгууллагын жагсаалт авах
+  </Accordion>
+  
+  <Accordion title="400 Bad Request" icon="triangle-exclamation">
+    **Шалтгаанууд:**
+    - ID формат буруу
+    
+    **Шийдэл:**
+    - ID string төрөлтэй эсэхийг шалгах
+    - Хоосон ID илгээгээгүй эсэхийг шалгах
+  </Accordion>
+  
+  <Accordion title="429 Too Many Requests" icon="clock">
+    **Шалтгаанууд:**
+    - Rate limit хэтэрсэн
+    
+    **Шийдэл:**
+    - `retryAfter` секунд хүлээх
+    - Хүсэлтийн тоог багасгах
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Code Examples
+
+<CodeGroup>
+
+```javascript JavaScript - Basic
+async function getOrganizationDetails(organizationId) {
+  const response = await fetch(
+    `https://sharnom.systems/organization/${organizationId}`
+  );
+  
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  const data = await response.json();
+  
+  if (data.status === 'Success') {
+    return data.value;
+  } else {
+    throw new Error(data.msgList.join(', '));
+  }
+}
+
+// Ашиглалт
+try {
+  const org = await getOrganizationDetails('1');
+  console.log('Байгууллага:', org.name);
+  console.log('Утас:', org.phone);
+} catch (error) {
+  console.error('Алдаа:', error.message);
+}
+```
+
+```python Python - requests
+import requests
+
+def get_organization_details(org_id):
+    url = f"https://sharnom.systems/organization/{org_id}"
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        data = response.json()
+        if data['status'] == 'Success':
+            return data['value']
+        else:
+            raise Exception(', '.join(data['msgList']))
+    else:
+        response.raise_for_status()
+
+# Ашиглалт
+try:
+    org = get_organization_details('1')
+    print(f"Байгууллага: {org['name']}")
+    print(f"Утас: {org['phone']}")
+except Exception as e:
+    print(f"Алдаа: {e}")
+```
+
+```typescript TypeScript
+interface Organization {
+  id: string;
+  name: string;
+  category: string;
+  address: string;
+  district: string;
+  phone: string;
+  email?: string;
+  website?: string;
+  latitude?: number;
+  longitude?: number;
+  description?: string;
+  workingHours?: string;
+}
+
+interface OrganizationResponse {
+  value: Organization;
+  data: null;
+  msgList: string[];
+  attrs: Record<string, any>;
+  status: 'Success' | 'Error';
+}
+
+async function getOrganizationDetails(
+  organizationId: string
+): Promise<Organization> {
+  const response = await fetch(
+    `https://sharnom.systems/organization/${organizationId}`
+  );
+  
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  const data: OrganizationResponse = await response.json();
+  
+  if (data.status === 'Success') {
+    return data.value;
+  } else {
+    throw new Error(data.msgList.join(', '));
+  }
+}
+```
+
+</CodeGroup>
+
+---
+
+## Usage Examples
+
+<AccordionGroup>
+  <Accordion title="Байгууллагын мэдээлэл харуулах" icon="display">
+    ```javascript
+    async function displayOrganization(orgId) {
+      try {
+        const response = await fetch(
+          `https://sharnom.systems/organization/${orgId}`
+        );
+        const data = await response.json();
+        
+        if (data.status === 'Success') {
+          const org = data.value;
+          
+          console.log(`
+    === ${org.name} ===
+    Ангилал: ${org.category}
+    Хаяг: ${org.address}
+    Утас: ${org.phone}
+    И-мэйл: ${org.email || 'Байхгүй'}
+    Вебсайт: ${org.website || 'Байхгүй'}
+    Ажлын цаг: ${org.workingHours || 'Байхгүй'}
+          `);
+        } else {
+          console.error('Алдаа:', data.msgList);
+        }
+      } catch (error) {
+        console.error('Хүсэлт амжилтгүй:', error);
+      }
+    }
+
+    // Ашиглалт
+    displayOrganization('1');
+    ```
+  </Accordion>
+  
+  <Accordion title="Газрын зураг дээр байршил харуулах" icon="map-location-dot">
+    ```javascript
+    async function showOnMap(orgId) {
+      const response = await fetch(
+        `https://sharnom.systems/organization/${orgId}`
+      );
+      const data = await response.json();
+      
+      if (data.status === 'Success' && data.value.latitude && data.value.longitude) {
+        const org = data.value;
+        
+        // Google Maps URL
+        const mapUrl = `https://www.google.com/maps?q=${org.latitude},${org.longitude}`;
+        
+        console.log(`${org.name} - Газрын зураг:`, mapUrl);
+        
+        return {
+          name: org.name,
+          coordinates: [org.latitude, org.longitude]
+        };
+      }
+      
+      return null;
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="React Component" icon="react">
+    ```jsx
+    import React, { useEffect, useState } from 'react';
+
+    function OrganizationDetail({ orgId }) {
+      const [organization, setOrganization] = useState(null);
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+      
+      useEffect(() => {
+        async function fetchOrganization() {
+          try {
+            const response = await fetch(
+              `https://sharnom.systems/organization/${orgId}`
+            );
+            const data = await response.json();
+            
+            if (data.status === 'Success') {
+              setOrganization(data.value);
+            } else {
+              setError(data.msgList.join(', '));
+            }
+          } catch (err) {
+            setError(err.message);
+          } finally {
+            setLoading(false);
+          }
+        }
+        
+        fetchOrganization();
+      }, [orgId]);
+      
+      if (loading) return <div>Уншиж байна...</div>;
+      if (error) return <div>Алдаа: {error}</div>;
+      if (!organization) return null;
+      
+      return (
+        <div className="organization-detail">
+          <h1>{organization.name}</h1>
+          <p><strong>Ангилал:</strong> {organization.category}</p>
+          <p><strong>Хаяг:</strong> {organization.address}</p>
+          <p><strong>Утас:</strong> {organization.phone}</p>
+          {organization.email && (
+            <p><strong>И-мэйл:</strong> {organization.email}</p>
+          )}
+          {organization.website && (
+            <p>
+              <strong>Вебсайт:</strong>{' '}
+              <a href={organization.website}>{organization.website}</a>
+            </p>
+          )}
+          {organization.workingHours && (
+            <p><strong>Ажлын цаг:</strong> {organization.workingHours}</p>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Rate Limiting
+
+<Warning>
+  - **Лимит:** 100 хүсэлт/минут
+  - **Burst:** 20 хүсэлт/секунд
+</Warning>
+
+---
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Error handling" icon="shield-check">
+    404 алдааг зөв боловсруулах
+  </Card>
+  
+  <Card title="Caching" icon="database">
+    Байгууллагын мэдээллийг түр санах ойд хадгалах
+  </Card>
+  
+  <Card title="ID validation" icon="check-double">
+    API дуудахаас өмнө ID-г шалгах
+  </Card>
+  
+  <Card title="Retry logic" icon="rotate">
+    Network алдаа гарсан үед дахин оролдох
+  </Card>
+</CardGroup>
+
+---
+
+## Notes
+
+<Info>
+  - Энэхүү endpoint нь **нээлттэй (public)** бөгөөд authentication шаардахгүй
+  - Байгууллагын мэдээлэл хугацаатай cache хийгдэж болно
+  - Зарим талбарууд (email, website, workingHours) optional байж болно
+</Info>
+
+---
+
+## Related Endpoints
+
+<CardGroup cols={3}>
+  <Card title="Жагсаалт" icon="list" href="/api-reference/endpoint/directory">
+    GET /directory
+  </Card>
+  
+  <Card title="AI хайлт" icon="robot" href="/api-reference/endpoint/assistant">
+    POST /yellow-books/assistant
+  </Card>
+  
+  <Card title="Админ и-мэйл" icon="envelope" href="/api-reference/endpoint/admin-email">
+    POST /admin/email
+  </Card>
+</CardGroup>
